@@ -1,0 +1,133 @@
+<div class="card">
+  <div class="card-header">
+    <h2 align="center">Add device to warehouse</h2>
+  </div>
+  <div class="card-bod">
+    <form role="form" #addDeviceForm="ngForm" (ngSubmit)="onSubmit(addDeviceForm)" autocomplete="off">
+      <div class="row">
+        <div class="col-1 col-lg-3"></div>
+        <div class="col">
+          <div class="row">
+            <div class="col">
+              <label for="nameList">Name (get from list or scribe)</label>
+              <input class="form-control" [(ngModel)]="device.name" type="text" name="name"
+                     #name="ngModel" minlength="3" required>
+              <div *ngIf="name.invalid && (name.dirty || name.touched)" class="alert alert-danger">
+                <div *ngIf="name.errors.required">
+                  Name is required.
+                </div>
+                <div *ngIf="name.errors.minlength">
+                  Name must be at least 3 characters long.
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="row" *ngIf="!device.name">
+            <div class="col">
+              <label>List of name</label>
+              <select class="form-control" id="nameList" [(ngModel)]="device.name" name="name">
+                <option value=""></option>
+                <option *ngFor="let name of allDeviceName">{{name}}</option>
+              </select>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-lg-8 col-sm-4">
+              <label for="category">Category</label>
+              <select class="form-control" id="category" [(ngModel)]="device.category" name="company">
+                <option *ngFor="let cat of allCategory" value="{{cat.idx}}">{{cat.name}}</option>
+              </select>
+            </div>
+            <div class="col d-lg-block d-none">
+              <button id="newCat" class="btn btn-sm btn-info" (click)="openCatModal()">Add new category</button>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col">
+              <label for="company">Company</label>
+              <select class="form-control" id="company" [(ngModel)]="device.company" name="company">
+                <option *ngFor="let com of company" value="{{com.idx}}">{{com.name}}</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="row">
+            <div class="col">
+              <label for="status">Status</label>
+              <select class="form-control" id="status" [(ngModel)]="device.status" name="status">
+                <option *ngFor="let status of statuses" value="{{status.idx}}">{{status.name}}</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="row">
+            <div class="col">
+              <label for="description">Description</label>
+              <textarea class="form-control" id="description" [(ngModel)]="device.description" rows="3"
+                        name="description"></textarea>
+            </div>
+          </div>
+        </div>
+        <div class="col-1 col-lg-3"></div>
+      </div>
+
+      <!--      <div class="row">-->
+      <!--        <div class="col"></div>-->
+      <!--        <div class="col" *ngIf="newSn != null">-->
+      <!--
+      <!--        </div>-->
+      <!--        <div class="col"></div>-->
+      <!--      </div>-->
+      <div class="row">
+        <div class="col"></div>
+        <div class="col"></div>
+        <div class="col">
+          <button class="btn btn-success" type="submit" [disabled]="!addDeviceForm.valid">Submit</button>
+        </div>
+      </div>
+
+    </form>
+  </div>
+</div>
+
+
+<ng-template #catModal let-c="close" let-d="dismiss">
+  <div class="modal-header">
+    <h4 class="modal-title">Add category</h4>
+    <button type="button" class="close" aria-label="Close" (click)="closeModal()">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body">
+    <form role="form" #addCate="ngForm" (ngSubmit)="addCategory(addCate)">
+      <div class="row">
+        <label>Name</label>
+      </div>
+      <div class="row">
+        <div class="col">
+          <input class="form-control" [(ngModel)]="category.name" type="text" name="name"
+                 #catName="ngModel" minlength="3" required>
+          <div *ngIf="catName.invalid && (catName.dirty || catName.touched)" class="alert alert-danger">
+            <div *ngIf="catName.errors.required">
+              Name is required.
+            </div>
+            <div *ngIf="catName.errors.minlength">
+              Name must be at least 3 characters long.
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col">
+          <label for="description">Description</label>
+          <textarea class="form-control" id="description" [(ngModel)]="category.description" rows="3"
+                    name="description"></textarea>
+        </div>
+      </div>
+      <button type="button" [disabled]="!addCate.valid" class="btn btn-primary" type="submit">Submit</button>
+    </form>
+  </div>
+  <div class="modal-footer">
+    <button type="button" class="btn btn-primary" (click)="closeModal()">Close</button>
+  </div>
+</ng-template>

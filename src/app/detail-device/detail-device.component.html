@@ -1,0 +1,182 @@
+<div class="card">
+  <div class="card-header">
+    <h2 align="center">Device detail</h2>
+  </div>
+  <div class="card-body">
+<!--        <div class="row">-->
+<!--          <div class="col">-->
+<!--            <p>Device: {{device.name}}</p>-->
+<!--          </div>-->
+<!--          <div class="col">-->
+<!--            <p>Company owner: {{device.company.name}}</p>-->
+<!--          </div>-->
+<!--          <div class="col">-->
+<!--            <p>Status: {{device.status.name}}</p>-->
+<!--          </div>-->
+<!--        </div>-->
+<!--        <div class="row">-->
+<!--          <div class="col">-->
+<!--            <p>Date in: {{mainService.displayDate (device.dateIn)}}</p>-->
+<!--          </div>-->
+<!--          <div class="col">-->
+<!--            <p>Last status changes: {{mainService.displayDate (device.dateOut)}}</p>-->
+<!--          </div>-->
+<!--          <div class="col">-->
+<!--          </div>-->
+<!--        </div>-->
+<!--        <div class="row">-->
+<!--          <div class="col">-->
+<!--            <p>Serial number: {{device.serialNumber}}</p>-->
+<!--          </div>-->
+<!--          <div class="col">-->
+<!--            <p>Description: {{device.description}}</p>-->
+<!--          </div>-->
+<!--          <div class="col">-->
+<!--          </div>-->
+<!--        </div>-->
+
+    <ul class="list-group">
+      <li class="list-group-item">
+        <p>Device: {{device.name}}</p>
+      </li>
+      <li class="list-group-item">
+        <p>Company owner: {{device.company.name}}</p>
+      </li>
+      <li class="list-group-item">
+        <p>Status:  {{device.status.name}}</p>
+      </li>
+      <li class="list-group-item">
+        <p>Category:  {{device.category.name}}</p>
+      </li>
+      <li class="list-group-item">
+        <p>Date in: {{mainService.displayDate (device.dateIn)}}</p>
+      </li>
+      <li class="list-group-item">
+        <p>Last status changes: {{mainService.displayDate (device.dateOut)}}</p>
+      </li>
+      <li class="list-group-item">
+        <p>Serial number: {{device.serialNumber}}</p>
+      </li>
+      <li class="list-group-item">
+        <p>Description: {{device.description}}</p>
+      </li>
+    </ul>
+
+<!--    <table class="table">-->
+<!--      <tbody>-->
+<!--      <tr>-->
+<!--        <td>Device:</td>-->
+<!--        <td class="data">{{device.name}}</td>-->
+<!--        <td>Company owner:</td>-->
+<!--        <td class="data">{{device.company.name}}</td>-->
+<!--        <td>Status:</td>-->
+<!--        <td class="data">{{device.status.name}}</td>-->
+<!--      </tr>-->
+<!--      <tr>-->
+<!--        <td>Date in:</td>-->
+<!--        <td class="data">{{mainService.displayDate (device.dateIn)}}</td>-->
+<!--        <td>Last status changes:</td>-->
+<!--        <td class="data">{{mainService.displayDate (device.dateOut)}}</td>-->
+<!--        <td>Serial number:</td>-->
+<!--        <td class="data"> {{device.serialNumber}}</td>-->
+<!--      </tr>-->
+<!--      <tr>-->
+<!--        <td></td>-->
+<!--        <td></td>-->
+<!--        <td>Description:</td>-->
+<!--        <td class="data"> {{device.description}}</td>-->
+<!--        <td></td>-->
+<!--        <td></td>-->
+<!--      </tr>-->
+<!--      </tbody>-->
+<!--    </table>-->
+    <div class="row">
+      <div class="col"></div>
+      <div class="col" *ngIf="device.serialNumber">
+        <div class="row">
+          <div class="col" id="print-section" *ngIf="showQr">
+            <qrcode [qrdata]="device.serialNumber"  [usesvg]="true" [size]="256"
+                    [level]="'M'"></qrcode>
+          </div>
+<!--          <div class="col"  *ngIf="!showQr"><button class="btn btn-info" (click)="showQr = !showQr">Show QR</button></div>-->
+          <div class="col"></div>
+        </div>
+      </div>
+      <div class="col">
+      </div>
+    </div>
+  </div>
+  <div class="card-footer">
+    <div class="row">
+      <div class="col">
+        <button class="btn btn-info" (click)="openModal(historyModal)">Show history info</button>
+      </div>
+      <div class="col">
+<!--        <button class="btn btn-primary btn block" (click)="print()">Print QR code</button>-->
+        <div class="col"  *ngIf="!showQr"><button class="btn btn-info" (click)="showQr = !showQr">Show QR</button></div>
+      </div>
+      <div class="col" *ngIf="!openForm">
+        <button class="btn btn-secondary btn-sm" (click)="openForm = !openForm">Change status</button>
+      </div>
+      <div *ngIf="openForm" class="col">
+        <form role="form" #updateDevice="ngForm" (ngSubmit)="onSubmit(updateDevice)" autocomplete="off">
+          <div class="row">
+            <label for="status">Status</label>
+            <select class="form-control" id="status" [(ngModel)]="device.status" name="status">
+              <option *ngFor="let status of deviceStatus" [value]="status.idx">{{status.name}}</option>
+            </select>
+          </div>
+          <div class="row">
+            <label for="description">Description</label>
+            <textarea class="form-control" id="description" [(ngModel)]="device.description" rows="3"
+                      name="description"></textarea>
+          </div>
+          <button class="btn btn-warning" type="submit">Update</button>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+
+<ng-template #historyModal let-c="close" let-d="dismiss">
+  <div class="modal-header">
+    <h4 class="modal-title">Status history</h4>
+    <button type="button" class="close" aria-label="Close" (click)="closeModal()">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body">
+    <div class="card">
+
+        <div class="table-wrapper-scroll-y my-custom-scrollbar">
+          <table class="table table-bordered table-striped mb-0">
+            <thead>
+            <th (click)="setOrder('dateChange')"
+                [class.active]="order === 'dateChange'">Last status changes
+              <span [hidden]="!reverse">▼</span
+              ><span [hidden]="reverse">▲</span></th>
+            <th>Description</th>
+            <th>Status</th>
+            <th>User</th>
+            </thead>
+            <tbody>
+            <tr *ngFor="let history of deviceHistory | orderBy: order:reverse:'case-insensitive'">
+              <ng-container *ngIf="history.serialNumber === device.serialNumber">
+                <td>{{mainService.displayDate (history.dateOut)}}</td>
+                <td>{{history.description}}</td>
+                <td>{{history.status.name}}</td>
+                <td>{{history.user.name}}</td>
+              </ng-container>
+            </tr>
+            </tbody>
+          </table>
+        </div>
+    </div>
+
+  </div>
+  <div class="modal-footer">
+    <button type="button" class="btn btn-primary" (click)="closeModal()">Close</button>
+  </div>
+</ng-template>
+
+

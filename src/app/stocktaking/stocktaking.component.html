@@ -1,0 +1,140 @@
+<ng-container>
+    <div class="row ">
+        <div class="col d-none d-lg-block">
+            <div class="row">
+                <div class="col">
+                    <h2>Confirmed: {{confirmedDevice}}</h2>
+                </div>
+                <div class="col">
+                    <h2>Left:  {{leftDevice}}</h2></div>
+            </div>
+        </div>
+        <div class="col"></div>
+        <div class="col d-none d-lg-block">
+            <div class="row">
+            <button *ngIf="!currentStocktaking" class="btn btn-outline-success btn-block" (click)="startNewStocktaking()">Start new stocktaking
+            </button>
+           </div>
+            <div class="row">
+                <button class="btn btn-outline-warning btn-block" [routerLink]="['/stocktakingHistory']" >History</button>
+            </div>
+        </div>
+    </div>
+    <div class="row ">
+        <div class="col"></div>
+        <div class="col d-none d-lg-block">
+            <div class="card">
+                <div class="card-body">
+                    <div class="scanner-shell">
+                        <zxing-scanner [torch]="torchEnabled" [(device)]="currentDevice"
+                                       (scanSuccess)="onCodeResult($event)"
+                                       [formats]="formatsEnabled" [tryHarder]="tryHarder"
+                                       (permissionResponse)="onHasPermission($event)"
+                                       (camerasFound)="onCamerasFound($event)"
+                                       (torchCompatible)="onTorchCompatible($event)"></zxing-scanner>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col d-none d-lg-block">
+
+        </div>
+    </div>
+    <div class="row ">
+        <div class="col"></div>
+        <div class="col d-none d-lg-block">
+            <label>Device</label>
+            <select class="form-control" (change)="onDeviceSelectChange($event.target.value)">
+                <option value="" [selected]="!currentDevice">No Device Selected</option>
+                <option *ngFor="let device of availableDevices" [value]="device.deviceId"
+                        [selected]="currentDevice && device.deviceId === currentDevice.deviceId">{{device.label}}</option>
+            </select>
+        </div>
+        <div class="col"></div>
+    </div>
+
+    <div class="row d-block d-sm-block d-lg-none d-sm-none">
+        <div class="col">
+            <div class="card">
+                <div class="card-body">
+                    <zxing-scanner [torch]="torchEnabled" [(device)]="currentDevice"
+                                   (scanSuccess)="onCodeResult($event)"
+                                   [formats]="formatsEnabled" [tryHarder]="tryHarder"
+                                   (permissionResponse)="onHasPermission($event)"
+                                   (camerasFound)="onCamerasFound($event)"
+                                   (torchCompatible)="onTorchCompatible($event)"></zxing-scanner>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col"></div>
+            <div class="col">
+            </div>
+            <div class="col">
+                <button [hidden]="!qrResultString" class="btn btn-success btn-sm" (click)="clearResult()">Get new code
+                </button>
+            </div>
+        </div>
+    </div>
+    <div class="row d-block d-sm-block d-lg-none d-sm-none">
+        <div class="col"></div>
+        <div class="col">
+            <label>Device</label>
+            <select class="form-control" (change)="onDeviceSelectChange($event.target.value)">
+                <option value="" [selected]="!currentDevice">No Device Selected</option>
+                <option *ngFor="let device of availableDevices" [value]="device.deviceId"
+                        [selected]="currentDevice && device.deviceId === currentDevice.deviceId">{{device.label}}</option>
+            </select>
+        </div>
+        <div class="col"></div>
+    </div>
+
+</ng-container>
+
+<ng-container *ngIf="activeStocktaking && activeStocktaking.length > 0">
+    <div class="row">
+        <div class="col-lg"></div>
+        <div class="col">
+            <table class="table">
+                <thead>
+                <th>Name</th>
+                <th>Status</th>
+                </thead>
+                <tbody>
+                <tr *ngFor="let dev of activeStocktaking" [ngClass]="dev.confirmed ? 'table-success' : 'table-warning'">
+<!--                    <ng-container *ngIf="!dev.confirmed">-->
+                    <ng-container>
+                        <td>{{dev.device.name}}</td>
+                        <td><i [ngClass]="dev.confirmed ? 'fa fa-check' : 'fa fa-times'"></i></td>
+                    </ng-container>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+<!--        <div class="col">-->
+<!--            <table class="table">-->
+<!--                <thead>-->
+<!--                <th>Name</th>-->
+<!--                <th>Status</th>-->
+<!--                </thead>-->
+<!--                <tbody>-->
+<!--                <tr *ngFor="let dev of activeStocktaking" [ngClass]="dev.confirmed ? 'table-success' : 'table-warning'">-->
+<!--                                        <ng-container *ngIf="dev.confirmed">-->
+<!--&lt;!&ndash;                    <ng-container>&ndash;&gt;-->
+<!--                        <td>{{dev.device.name}}</td>-->
+<!--                        <td><i [ngClass]="dev.confirmed ? 'fa fa-check' : 'fa fa-times'"></i></td>-->
+<!--                    </ng-container>-->
+<!--                </tr>-->
+<!--                </tbody>-->
+<!--            </table>-->
+<!--        </div>-->
+        <div class="col-lg"></div>
+    </div>
+
+</ng-container>
+
+<div class="row">
+    <button *ngIf="currentStocktaking" class="btn btn-outline-danger btn-block"
+            [routerLink]="['/management-stocktaking/' + currentStocktaking]">Close stocktaking
+    </button>
+</div>

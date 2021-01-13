@@ -1,0 +1,13 @@
+li{
+  padding: 15px;
+}
+
+.endTime {
+  opacity:1;
+  animation: flickerAnimation 2s infinite;
+}
+@keyframes flickerAnimation { /* flame pulses */
+  0%   { opacity:1; }
+  50%  { opacity:0; }
+  100% { opacity:1; }
+}

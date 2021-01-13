@@ -1,0 +1,92 @@
+<div class="card">
+  <div class="card-header">
+    <div class="row">
+      <div class="col"></div>
+      <div class="col">
+        <h2 align="center">{{userId ? 'Edit user' : 'Add user'}}</h2>
+      </div>
+      <div class="col">
+        <button class="btn btn-small btn-info" *ngIf="currentUser.role.role ==='Admin'"
+                (click)="showUserList = !showUserList">{{showUserList ? 'Hide user list' : 'Show user list' }}</button>
+      </div>
+    </div>
+  </div>
+  <div class="card-bod">
+    <form role="form" #userForm="ngForm" (ngSubmit)="onSubmit(userForm)" autocomplete="off">
+      <div class="row">
+        <div class="col"></div>
+        <div class="col">
+
+          <div class="row">
+            <label for="name">Name</label>
+            <input id="name" class="form-control" [(ngModel)]="user.name" type="text" name="name"
+                   #name="ngModel" minlength="4" required [disabled]="userId">
+            <div *ngIf="name.invalid && (name.dirty || name.touched)" class="alert alert-danger">
+              <div *ngIf="name.errors.required">
+                Name is required.
+              </div>
+              <div *ngIf="name.errors.minlength">
+                Name must be at least 4 characters long.
+              </div>
+            </div>
+          </div>
+
+          <div class="row">
+            <label for="name">Password</label>
+            <input id="password" class="form-control" [(ngModel)]="user.password" type="password" name="password"
+                   #password="ngModel" minlength="6" required [disabled]="editOtherUser">
+            <div *ngIf="password.invalid && (password.dirty || password.touched)" class="alert alert-danger">
+              <div *ngIf="password.errors.required">
+                Password is required.
+              </div>
+              <div *ngIf="password.errors.minlength">
+                Password must be at least 6 characters long.
+              </div>
+            </div>
+            <div class="form-check" *ngIf="editOtherUser">
+              <input type="checkbox" [(ngModel)]="editOtherUser" name="editOtherUser" class="form-check-input" id="exampleCheck1">
+              <label class="form-check-label" for="exampleCheck1">Block edit password other user</label>
+            </div>
+          </div>
+
+          <div class="row" *ngIf="this.currentUser.role.role === 'Admin'">
+            <label for="role">Role</label>
+            <select class="form-control" id="role" [(ngModel)]="user.role" name="role">
+              <option *ngFor="let role of roles" value="{{role.idx}}">{{role.role}}</option>
+            </select>
+          </div>
+        </div>
+        <div class="col"></div>
+      </div>
+      <div class="row">
+        <div class="col"></div>
+        <div class="col"></div>
+        <div class="col">
+          <button class="btn btn-success" type="submit"
+                  [disabled]="!userForm.valid">{{userId ? 'Edit' : 'Create'}}</button>
+        </div>
+      </div>
+    </form>
+  </div>
+</div>
+
+<ng-container *ngIf="showUserList">
+  <table class="table">
+    <thead>
+    <th>Name</th>
+    <th>Role</th>
+    <th>Edit</th>
+    </thead>
+    <tbody>
+    <tr *ngFor="let user of allUsers">
+      <td>{{user.name}}</td>
+      <td>{{user.role.role}}</td>
+      <td>
+        <button class="btn btn-sm btn-info" (click)="getUser(user.idx)" [routerLink]="['/user/' + user.idx]"><i
+          class="fa fa-arrow-right"></i></button>
+      </td>
+    </tr>
+    </tbody>
+  </table>
+</ng-container>
+

@@ -1,0 +1,105 @@
+<div class="d-lg-block d-none d-md-block">
+    <div class="table-wrapper-scroll-y my-custom-scrollbar">
+        <div class="row">
+            <div class="col-sm-3 col-lg-3">Find by name:
+                <input class="form-control" type="text" name="searchString" [(ngModel)]="searchString" (keyup)="find()">
+            </div>
+        </div>
+        <table class="table table-bordered table-striped mb-0">
+            <thead>
+            <th (click)="setOrder('name')"
+                [class.active]="order === 'name'">Name
+                <span [hidden]="reverse">▼</span
+                ><span [hidden]="!reverse">▲</span></th>
+            <th (click)="setOrder('company.name')"
+                [class.active]="order === 'company.name'">Company
+                <span [hidden]="reverse">▼</span
+                ><span [hidden]="!reverse">▲</span></th>
+            <th (click)="setOrder('status.name')"
+                [class.active]="order === 'status.name'">Status
+                <span [hidden]="reverse">▼</span
+                ><span [hidden]="!reverse">▲</span></th>
+            <th (click)="setOrder('category.name')"
+                [class.active]="order === 'category.name'">Category
+                <span [hidden]="reverse">▼</span
+                ><span [hidden]="!reverse">▲</span></th>
+            <th (click)="setOrder('serialNumber')"
+                [class.active]="order === 'serialNumber'">Sn
+                <span [hidden]="reverse">▼</span
+                ><span [hidden]="!reverse">▲</span></th>
+            <th (click)="setOrder('dateIn')"
+                [class.active]="order === 'dateIn'">Date in
+                <span [hidden]="reverse">▼</span
+                ><span [hidden]="!reverse">▲</span></th>
+            <th (click)="setOrder('dateOut')"
+                [class.active]="order === 'dateOut'">Last status changes
+                <span [hidden]="reverse">▼</span
+                ><span [hidden]="!reverse">▲</span></th>
+            <th>Go to details</th>
+            </thead>
+            <tbody>
+            <tr *ngFor="let device of allDevice | orderBy: order:reverse:'case-insensitive'">
+                <td>{{device.name}}</td>
+                <td>{{device.company ? device.company.name : ''}}</td>
+                <td>{{device.status ? device.status.name : ''}}</td>
+                <td>{{device.category ? device.category.name : ''}}</td>
+                <td>{{device.serialNumber}}</td>
+                <td>{{mainService.displayDate (device.dateIn)}}</td>
+                <td>{{mainService.displayDate (device.dateOut)}}</td>
+                <td>
+                    <button class="btn btn-sm btn-info" [routerLink]="['/device/' + device.serialNumber]"><i
+                            class="fa fa-arrow-circle-o-right"></i></button>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<div class="d-block d-sm-none">
+    <div class="table-wrapper-scroll-y my-custom-scrollbar">
+        <div class="col-sm-3 col-lg-3">Find:
+            <input class="form-control" type="text" name="searchString" [(ngModel)]="searchString" (keyup)="find()">
+        </div>
+        <table class="table table-bordered table-striped mb-0">
+            <thead>
+            <th (click)="setOrder('name')"
+                [class.active]="order === 'name'">Name
+                <span [hidden]="reverse">▼</span
+                ><span [hidden]="!reverse">▲</span></th>
+            <th (click)="setOrder('company.name')"
+                [class.active]="order === 'company.name'">Company
+                <span [hidden]="reverse">▼</span
+                ><span [hidden]="!reverse">▲</span></th>
+            <th (click)="setOrder('status.name')"
+                [class.active]="order === 'status.name'">Status
+                <span [hidden]="reverse">▼</span
+                ><span [hidden]="!reverse">▲</span></th>
+            <th>Go to details</th>
+            </thead>
+            <tbody>
+            <tr *ngFor="let device of allDevice| orderBy: order:reverse:'case-insensitive'">
+                <td>{{device.name}}</td>
+                <td>{{device.company ? device.company.name : ''}}</td>
+                <td>{{device.status ? device.status.name : ''}}</td>
+                <td>
+                    <button class="btn btn-sm btn-info" [routerLink]="['/device/' + device.serialNumber]"><i
+                            class="fa fa-arrow-circle-o-right"></i></button>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+
+
+<!--<mat-paginator [pageSizeOptions]="[5, 10, 20]" showFirstLastButtons>-->
+
+<!--</mat-paginator>-->
+
+
+<!--<data-table *ngIf="pattern" [pattern]="pattern['deviceList']" source="{{apiUrl}}/device/"-->
+<!--            [onRowCallback]="rowCallback"-->
+<!--            (onRowClick)="openMessage($event)"-->
+<!--            [paging]="true"-->
+<!--&gt;</data-table>-->

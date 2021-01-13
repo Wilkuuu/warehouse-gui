@@ -1,0 +1,42 @@
+<div class="row">
+    <div class="col-md-1">
+        <button class="btn-outline-primary btn" [routerLink]="['/stocktaking']"><i class="fa fa-arrow-circle-left"></i>Back
+        </button>
+    </div>
+</div>
+<div class="row">
+    <div class="col-md-2"></div>
+    <div class="col-md-8">
+
+        <div class="row" *ngFor="let stock of stocktakingList |keyvalue">
+            <button class="btn btn-block btn-success m-2"
+                    (click)="loadData(stock.value.idx)">{{stock.value.dateStart | date:'medium'}}</button>
+        </div>
+        <div class="row" *ngIf="detailData">
+            <div class="col">
+                <table class="table">
+                    <thead>
+                    <tr>
+                        <td>Name</td>
+                        <td>Date in</td>
+                        <td>Sn</td>
+                        <td>Description</td>
+                        <td>User</td>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr *ngFor="let data of detailData" [ngClass]="data.confirmed ? 'bg-success' : 'bg-warning'">
+                        <td>{{data.device.name}}</td>
+                        <td>{{data.device.dateIn | date :'medium'}}</td>
+                        <td>{{data.device.serialNumber}}</td>
+                        <td>{{data.device.description}}</td>
+                        <td>{{data.user.name}}</td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+    </div>
+    <div class="col-md-2"></div>
+</div>

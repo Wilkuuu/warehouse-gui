@@ -1,0 +1,51 @@
+<div class="row">
+  <div class="col"></div>
+  <div class="col">
+    <h2>Generate serial numbers</h2>
+  </div>
+  <div class="col"></div>
+</div>
+<div class="row">
+  <div class="col"></div>
+  <div class="col">
+    <label>How many?</label>
+  </div>
+  <div class="col"></div>
+</div>
+<div class="row">
+  <div class="col"></div>
+  <div class="col">
+    <form role="form">
+      <input class="form-control" type="number" name="count" [(ngModel)]="count" [min]="0" [max]="20">
+    </form>
+  </div>
+  <div class="col"></div>
+</div>
+<div class="row">
+  <div class="col"></div>
+  <div class="col">
+    <button class="btn btn-success btn-block" (click)="generateSn()">Generate</button>
+  </div>
+  <div class="col"></div>
+</div>
+<div class="row">
+  <div class="col"></div>
+  <div class="col">
+    <div class="col" id="print-section">
+      <qrcode [qrdata]="tempData"  [usesvg]="true" [size]="256"
+              [level]="'M'"></qrcode>
+    </div>
+  </div>
+  <div class="col"></div>
+</div>
+<div class="card">
+  <div class="card-body">
+    <div class="row" *ngIf="newSerials.length > 0">
+      <div class="col" *ngFor="let sn of newSerials">
+        <p>{{sn}}</p>
+        <qrcode [qrdata]="sn" [usesvg]="true" [size]="256"
+                [level]="'M'"></qrcode>
+      </div>
+    </div>
+  </div>
+</div>

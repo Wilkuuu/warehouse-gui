@@ -1,0 +1,26 @@
+.my-custom-scrollbar {
+  position: relative;
+  height: 800px;
+  overflow: auto;
+}
+.table-wrapper-scroll-y {
+  display: block;
+}
+
+thead th {
+  cursor: pointer;
+  margin-right: 15px;
+  margin-left: 15px;
+
+  span {
+    visibility: hidden;
+  }
+
+  &.active {
+    color: #000;
+
+    span {
+      visibility: visible;
+    }
+  }
+}
