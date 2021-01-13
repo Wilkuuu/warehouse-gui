@@ -10,7 +10,6 @@ import { JwtHelperService } from '@auth0/angular-jwt';
 })
 export class MainService {
     apiUrl = 'http://localhost:3000/api';
-    // apiUrl = 'https://magazyn-api.boosthigh.com/api';
     isActive = new Subject<boolean>();
     newUser = new Subject<boolean>();
     leftTime = new Subject<any>();
