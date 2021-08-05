@@ -19,7 +19,7 @@
 
           <div class="row">
             <label for="name">Name</label>
-            <input id="name" class="form-control" [(ngModel)]="user.name" type="text" name="name"
+            <input id="name" class="form-control" [(ngModel)]="user.name" type="text" name="name" value="name"
                    #name="ngModel" minlength="4" required [disabled]="userId">
             <div *ngIf="name.invalid && (name.dirty || name.touched)" class="alert alert-danger">
               <div *ngIf="name.errors.required">
@@ -33,7 +33,7 @@
 
           <div class="row">
             <label for="name">Password</label>
-            <input id="password" class="form-control" [(ngModel)]="user.password" type="password" name="password"
+            <input id="password" class="form-control" [(ngModel)]="user.password" type="password" name="password" value="password"
                    #password="ngModel" minlength="6" required [disabled]="editOtherUser">
             <div *ngIf="password.invalid && (password.dirty || password.touched)" class="alert alert-danger">
               <div *ngIf="password.errors.required">

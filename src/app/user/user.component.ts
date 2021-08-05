@@ -5,6 +5,17 @@ import { ToastrService } from 'ngx-toastr';
 import { ActivatedRoute, Router } from '@angular/router';
 import { JwtHelperService } from '@auth0/angular-jwt';
 
+class Role {
+    role?: string;
+}
+
+class Users {
+    idx: string;
+    name?: string;
+    role?: Role;
+    password?: string;
+}
+
 @Component({
     selector: 'app-user',
     templateUrl: './user.component.html',
@@ -13,10 +24,10 @@ import { JwtHelperService } from '@auth0/angular-jwt';
 export class UserComponent implements OnInit {
 
     roles: { idx: number, role: string }[];
-    user = {idx: null, name: null, role: null, password: null};
+    user: Users = {idx: null, name: null, role: null, password: null};
     userId = null;
     showUserList = false;
-    allUsers: [];
+    allUsers: Users[];
     currentUser = null;
     editOtherUser = false;
 
